@@ -13,5 +13,5 @@ module.exports = {
   paths: {
     artifacts: "./contracts/artifacts",
     cache: "./contracts/cache",
-  }
+  },
 };

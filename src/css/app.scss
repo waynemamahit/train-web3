@@ -1,1 +1,9 @@
 // app global css in SCSS form
+.q-card {
+  width: 100%;
+  max-width: 35vw;
+}
+
+.custom-bg {
+  background: radial-gradient(circle, #35a2df 0%, #014a88 100%)
+}

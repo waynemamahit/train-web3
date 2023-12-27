@@ -1,13 +1,25 @@
-# Sample Hardhat Project
+# Sample Training Web3 Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Training Web3 Experimental with using Quasar and Hardhat.
 
 Try running some of the following tasks:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
+yarn install
+yarn clean
+yarn compile
+```
+
+Run local RPC Server
+```shell
 npx hardhat node
-npx hardhat run scripts/deploy.js
+```
+
+Config with replace the host, chain id, and account keys array on rpc.json file to follow the local RPC Server and run this command for deploy contracts
+```shell
+yarn deploy
+```
+
+```shell
+quasar dev
 ```

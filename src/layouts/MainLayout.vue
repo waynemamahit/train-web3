@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="custom-bg">
       <q-toolbar>
         <q-btn
           flat
@@ -11,28 +11,24 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+        <q-toolbar-title> Train Web3 </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn
+          class="q-pa-sm"
+          color="secondary"
+          label="Connect Wallet"
+          icon="wallet"
+          @click="connectWallet"
+        />
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+        <q-item-label header> Features </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
+        <FeatureMenu
+          v-for="link in featureList"
           :key="link.title"
           v-bind="link"
         />
@@ -46,71 +42,60 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import FeatureMenu from "src/components/FeatureMenu.vue";
+import { requestAccounts } from "src/helpers/ethereum";
+import { showError } from "src/helpers/notify";
+import { defineComponent, onMounted, ref } from "vue";
 
-const linksList = [
+const featureList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: "Greeter",
+    caption: "a first feature for greeting",
+    icon: "waving_hand",
+    link: "/greeter",
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: "Todo",
+    caption: "a first basic crud feature",
+    icon: "task",
+    link: "/todo",
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: "Vote Up",
+    caption: "a vote up and register candidate feature",
+    icon: "how_to_vote",
+    link: "/voting",
   },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+];
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
-    EssentialLink
+    FeatureMenu,
   },
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+  setup() {
+    const leftDrawerOpen = ref(false);
+
+    onMounted(async () => {
+      await requestAccounts();
+    });
 
     return {
-      essentialLinks: linksList,
+      featureList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+      async connectWallet() {
+        try {
+          await requestAccounts();
+        } catch (error) {
+          showError(error, "Failed to connect wallet!")
+        }
+      },
+    };
+  },
+});
 </script>
